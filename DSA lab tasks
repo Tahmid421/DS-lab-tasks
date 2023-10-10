@@ -1,126 +1,65 @@
-#include<iostream>
-#include<string.h>
-#include<vector>
-using namespace std ;
-
-// A struct to store the information of a student
-
-struct Student {
-
-  int id; // Unique ID
-
-  int semesters; // Number of semesters completed
-
-  int credits; // Number of credits completed
-
-  double cgpa; // CGPA
-
-};
+#include <iostream>
+using namespace std;
 
 // A function to print the IDs of students who have a CGPA of 3.75 or above
-
-void printScholarshipStudents(vector<Student> &students) {
-
+void printScholarshipStudents(double arr[][4], int n) {
   cout << "Scholarship students:" << endl;
-
-  for (Student s : students) {
-
-    if (s.cgpa >= 3.75) {
-
-      cout << s.id << endl;
-
+  for (int i = 0; i < n; i++) {
+    if (arr[i][3] >= 3.75) {
+      cout <<"ID : "<< arr[i][0] << endl;
     }
-
   }
-
 }
 
 // A function to print the IDs of students who have completed more than 50 credits
-
-void printMoreThan50Credits(vector<Student> &students) {
-
+void printMoreThan50Credits(double arr[][4], int n) {
   cout << "Students who have completed more than 50 credits:" << endl;
-
-  for (Student s : students) {
-
-    if (s.credits > 50) {
-
-      cout << s.id << endl;
-
+  for (int i = 0; i < n; i++) {
+    if (arr[i][2] > 50) {
+      cout << "ID : "<< arr[i][0] << endl;
     }
-
   }
-
 }
 
 // A function to print the IDs of students who have completed minimum 2 semesters and minimum 28 credits
-
-void printMin2SemestersAnd28Credits(vector<Student> &students) {
-
-  cout << "Students who have completed minimum 2 semesters and minimum 28 credits:" << endl;
-
-  for (Student s : students) {
-
-    if (s.semesters >= 2 && s.credits >= 28) {
-
-      cout << s.id << endl;
-
+void printMin2SemestersAnd28Credits(double arr[][4], int n) {
+  cout << "Students who have completed minimum 2 semesters and minimum 28 credits: " << endl;
+  for (int i = 0; i < n; i++) {
+    if (arr[i][1] >= 2 && arr[i][2] >= 28) {
+      cout << "ID : " << arr[i][0] << endl;
     }
-
   }
-
 }
 
 int main() {
-
-  // A vector to store the records of 15 students
-
-  vector<Student> students = {
-
+  // A 2D array to store the records of 15 students
+  // Each row represents a student with the following information:
+  // ID, semesters, credits, CGPA
+  double students[15][4] = {
     {101, 3, 36, 3.8},
-
     {102, 4, 48, 3.6},
-
     {103, 5, 60, 3.9},
-
     {104, 6, 72, 4.0},
-
     {105, 7, 84, 3.7},
-
     {106, 2, 24, 3.5},
-
     {107, 1, 12, 3.4},
-
     {108, 8, 96, 3.8},
-
     {109, 4, 54, 3.6},
-
     {110, 5, 66, 3.9},
-
-    {111, 6, 78, 4.0},
-
-    {112, 7, 90, 3.7},
-
-    {113, 2, 30, 3.5},
-
-    {114, 1, 18, 3.4},
-
-    {115,8 ,102 ,3.8}
-
-
-
+    {111,6 ,78 ,4.0},
+    {112 ,7 ,90 ,3.7},
+    {113 ,2 ,30 ,3.5},
+    {114 ,1 ,18 ,3.4},
+    {115 ,8 ,102 ,3.8}
 
 
 };
 
 // Print the IDs of students based on the criteria
-
-printScholarshipStudents(students);
-
-printMoreThan50Credits(students);
-
-printMin2SemestersAnd28Credits(students);
+printScholarshipStudents(students,15);
+printMoreThan50Credits(students,15);
+printMin2SemestersAnd28Credits(students,15);
 
 return(0);
-
 }
+
