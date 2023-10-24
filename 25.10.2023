@@ -1,0 +1,56 @@
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std ;
+
+// Custom data type to store customer information
+struct Customer {
+    string nid ;
+    string name ;
+    string address ;
+    string phoneNumber ;
+    string accountNumber ;
+    string branchName ;
+    double balance ;
+    vector<string> transactionHistory;
+};
+
+int main() {
+    // Create a sample customer
+    Customer customer1;
+    customer1.nid = "123456789";
+    customer1.name = "MD.MUHTADI ISLAM";
+    customer1.address = "House.391,Road.11,Block -C,Bshundhara R/A,Dhaka 1229";
+    customer1.phoneNumber = "01750579820";
+    customer1.accountNumber = "AC123456";
+    customer1.branchName = "Banani";
+    customer1.balance = 1000.0;
+
+    // Perform transactions
+    customer1.transactionHistory.push_back("Deposit: $500");
+    customer1.balance += 500.0;
+    customer1.transactionHistory.push_back("Withdrawal: $200");
+    customer1.balance -= 200.0;
+
+    // Check if the account is in Banani branch
+    if (customer1.branchName == "Banani") {
+        cout << "Customer is in Banani branch." <<endl;
+    } else {
+        cout << "Customer is not in Banani branch." << endl;
+    }
+
+    // Display customer information
+    cout << "NID                 : " << customer1.nid << endl;
+    cout << "Name                : " << customer1.name <<endl;
+    cout << "Address             : " << customer1.address <<endl;
+    cout << "Phone Number        : " << customer1.phoneNumber <<endl;
+    cout << "Account Number      : " << customer1.accountNumber <<endl;
+    cout << "Branch Name         : " << customer1.branchName << endl;
+    cout << "Balance             : $ " << customer1.balance << endl;
+    cout << "Transaction History : " << endl;
+    for (const auto &transaction : customer1.transactionHistory) {
+        cout << " - " << transaction << endl;
+    }
+
+    return 0;
+}
