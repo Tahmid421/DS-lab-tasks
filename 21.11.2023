@@ -1,0 +1,88 @@
+#include <iostream>
+#define MAX_SIZE 5
+using namespace std;
+
+class Queue {
+private:
+    int myqueue[MAX_SIZE];
+    int front=-1;
+    int rear=-1;
+
+public:
+    Queue() {
+
+    };
+
+    bool isFull() {
+        return (rear == MAX_SIZE - 1);
+    }
+
+    bool isEmpty() {
+        return (front == -1 || front > rear || rear == -1);
+    }
+
+    void enQueue(int value) {
+        if (isFull()) {
+            cout << "Queue is full!!" << endl;
+        } else {
+            if (isEmpty()) {
+                front = 0;
+            }
+            rear++;
+            myqueue[rear] = value;
+            cout << value << " ";
+        }
+    }
+
+    int deQueue() {
+        if (isEmpty()) {
+            cout << " Queue is empty!! " << endl;
+            return -1;
+        } else {
+            int value = myqueue[front];
+            front++;
+            cout << " Deleted => " << value << " From myqueue" << endl;
+            if (front > rear) {
+                front = -1;
+                rear = -1;
+            }
+            return value;
+        }
+    }
+
+    void displayQueue() {
+        if (isEmpty()) {
+            cout << " Queue is empty" << endl;
+        } else {
+            cout << "Front = " << front << endl;
+            cout << "Queue elements : ";
+            for (int i = front; i <= rear; i++) {
+                cout << myqueue[i] << " ";
+            }
+            cout << endl << "Rear = " << rear << endl;
+        }
+    }
+};
+
+int main() {
+    Queue my;
+
+    my.deQueue();
+
+    cout << "Queue created:" << endl;
+
+    my.enQueue(1);
+    my.enQueue(2);
+    my.enQueue(3);
+    my.enQueue(4);
+    my.enQueue(5);
+    my.enQueue(6);
+
+    my.displayQueue();
+
+    my.deQueue();
+
+    my.displayQueue();
+
+    return 0;
+}
