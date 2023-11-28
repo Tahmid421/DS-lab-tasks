@@ -1,0 +1,137 @@
+#include <iostream>
+using namespace std ;
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+class LinkedList {
+public:
+    Node* head;
+
+    LinkedList() {
+        head = nullptr;
+    }
+
+    // Function to add a node at the front of the list
+    void addFront(int val) {
+        Node* new_node = new Node(val);
+        new_node->next = head;
+        head = new_node;
+    }
+
+    // Function to add a node after a given node
+    void addAfter(Node* prevNode, int val) {
+        if (prevNode == nullptr) {
+         cout << "Previous node cannot be null.\n";
+            return;
+        }
+        Node* new_node = new Node(val);
+        new_node->next = prevNode->next;
+        prevNode->next = new_node;
+    }
+
+    // Function to add a node at the end of the list
+    void addEnd(int val) {
+        Node* new_node = new Node(val);
+        if (head == nullptr) {
+            head = new_node;
+            return;
+        }
+        Node* last_node = head;
+        while (last_node->next != nullptr) {
+            last_node = last_node->next;
+        }
+        last_node->next = new_node;
+    }
+
+    // Function to delete a node by value
+    void deleteNode(int val) {
+        Node* temp = head;
+        Node* prev = nullptr;
+
+        if (temp != nullptr && temp->data == val) {
+            head = temp->next;
+            delete temp;
+            return;
+        }
+
+        while (temp != nullptr && temp->data != val) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        if (temp == nullptr) {
+         cout << "Value not found in the list."<<endl;
+            return;
+        }
+
+        prev->next = temp->next;
+        delete temp;
+    }
+
+    // Function to search for a value in the list
+    bool search(int val) {
+        Node* current = head;
+        while (current != nullptr) {
+            if (current->data == val) {
+                return true;
+            }
+            current = current->next;
+        }
+        return false;
+    }
+
+    // Function to display the linked list
+    void display() {
+        Node* current = head;
+        while (current != nullptr) {
+            cout << current->data << " -> ";
+            current = current->next;
+        }
+       cout << "nullptr" << endl;
+    }
+};
+
+int main() {
+    LinkedList myList;
+
+    // Adding elements to the list
+    myList.addEnd(1);
+    myList.addEnd(2);
+    myList.addEnd(3);
+
+    // Displaying the initial list
+    cout << "Initial list : ";
+    myList.display();
+
+    // Adding elements at different positions
+    myList.addFront(0);
+    myList.addAfter(myList.head->next, 1);
+    myList.addEnd(4);
+
+    // Displaying the modified list
+    cout << "Modified list : ";
+    myList.display();
+
+    // Deleting a node and displaying the updated list
+    myList.deleteNode(2);
+    cout << "List after deleting 2 : ";
+    myList.display();
+
+    // Searching for an element
+    int searchVal = 3;
+    if (myList.search(searchVal)) {
+       cout << searchVal << " Found in the list."<<endl;
+    } else {
+       cout << searchVal << " Not found in the list."<<endl;
+    }
+
+    return 0;
+}
