@@ -1,0 +1,202 @@
+#include <iostream>
+using namespace std;
+
+// Node structure for singly linked list
+// A node of a singly linked list
+struct Node {
+  int data; // data item
+  struct Node *next; // pointer to the next node
+};
+
+// A function to insert a node at the front of a singly linked list
+void insertFront(struct Node** head, int data) {
+  // allocate memory for a new node
+  struct Node* newNode = new Node;
+  // assign data to the new node
+  newNode->data = data;
+  // point the new node to the current head
+  newNode->next = *head;
+  // make the new node the new head
+  *head = newNode;
+}
+
+// A function to insert a node after a given node of a singly linked list
+void insertAfter(struct Node* prevNode, int data) {
+  // check if the given node is NULL
+  if (prevNode == NULL) {
+    cout << "The given previous node cannot be NULL" << endl;
+    return;
+  }
+  // allocate memory for a new node
+  struct Node* newNode = new Node;
+  // assign data to the new node
+  newNode->data = data;
+  // point the new node to the next node of the previous node
+  newNode->next = prevNode->next;
+  // point the previous node to the new node
+  prevNode->next = newNode;
+}
+
+// A function to insert a node at the end of a singly linked list
+void insertEnd(struct Node** head, int data) {
+  // allocate memory for a new node
+  struct Node* newNode = new Node;
+  // assign data to the new node
+  newNode->data = data;
+  // point the new node to NULL
+  newNode->next = NULL;
+  // check if the list is empty
+  if (*head == NULL) {
+    // make the new node the head
+    *head = newNode;
+    return;
+  }
+  // traverse the list to find the last node
+  struct Node* lastNode = *head;
+  while (lastNode->next != NULL) {
+    lastNode = lastNode->next;
+  }
+  // point the last node to the new node
+  lastNode->next = newNode;
+}
+
+// A function to delete the first node of a singly linked list
+void deleteFront(struct Node** head) {
+  // check if the list is empty
+  if (*head == NULL) {
+    cout << "The list is empty, nothing to delete" << endl;
+    return;
+  }
+  // store the head node in a temporary variable
+  struct Node* temp = *head;
+  // move the head to the next node
+  *head = (*head)->next;
+  // delete the old head node
+  delete temp;
+}
+
+// A function to delete the last node of a singly linked list
+void deleteEnd(struct Node** head) {
+  // check if the list is empty
+  if (*head == NULL) {
+    cout << "The list is empty, nothing to delete" << endl;
+    return;
+  }
+  // check if the list has only one node
+  if ((*head)->next == NULL) {
+    // delete the head node
+    delete *head;
+    // make the head NULL
+    *head = NULL;
+    return;
+  }
+  // traverse the list to find the second last node
+  struct Node* secondLast = *head;
+  while (secondLast->next->next != NULL) {
+    secondLast = secondLast->next;
+  }
+  // delete the last node
+  delete secondLast->next;
+  // make the second last node the new last node
+  secondLast->next = NULL;
+}
+
+// A function to delete a node with a given key from a singly linked list
+void deleteKey(struct Node** head, int key) {
+  // store the head node in a temporary variable
+  struct Node* temp = *head;
+  // store the previous node of the node to be deleted
+  struct Node* prev = NULL;
+  // check if the head node has the key
+  if (temp != NULL && temp->data == key) {
+    // move the head to the next node
+    *head = temp->next;
+    // delete the old head node
+    delete temp;
+    return;
+  }
+  // traverse the list to find the node with the key
+  while (temp != NULL && temp->data != key) {
+    // update the previous node
+    prev = temp;
+    // move to the next node
+    temp = temp->next;
+  }
+  // check if the key was not found
+  if (temp == NULL) {
+    cout << "The key was not found in the list" << endl;
+    return;
+  }
+  // unlink the node with the key from the list
+  prev->next = temp->next;
+  // delete the node with the key
+  delete temp;
+}
+
+// A function to print the contents of a singly linked list
+void printList(struct Node* head) {
+  // check if the list is empty
+  if (head == NULL) {
+    cout << "The list is empty" << endl;
+    return;
+  }
+  // traverse the list and print the data of each node
+  while (head != NULL) {
+    cout << head->data << " ";
+    head = head->next;
+  }
+  cout << endl;
+}
+
+// A main function to demonstrate some of the operations on a singly linked list
+int main() {
+  // create an empty list
+  struct Node* head = NULL;
+  // insert some nodes at the front of the list
+  insertFront(&head, 10);
+  insertFront(&head, 20);
+  insertFront(&head, 30);
+  // print the list
+  cout << "The list after inserting 10, 20, and 30 at the front:" << endl;
+  printList(head);
+  // insert some nodes at the end of the list
+  insertEnd(&head, 40);
+  insertEnd(&head, 50);
+  insertEnd(&head, 60);
+  // print the list
+  cout << "The list after inserting 40, 50, and 60 at the end:" << endl;
+  printList(head);
+  // insert some nodes after a given node of the list
+  insertAfter(head->next, 25);
+  insertAfter(head->next->next->next, 45);
+  insertAfter(head->next->next->next->next->next, 55);
+  // print the list
+  cout << "The list after inserting 25, 45, and 55 after some nodes:" << endl;
+  printList(head);
+  // delete some nodes from the front of the list
+  deleteFront(&head);
+  deleteFront(&head);
+  // print the list
+  cout << "The list after deleting two nodes from the front:" << endl;
+  printList(head);
+  // delete some nodes from the end of the list
+  deleteEnd(&head);
+  deleteEnd(&head);
+  // print the list
+  cout << "The list after deleting two nodes from the end:" << endl;
+  printList(head);
+  // delete some nodes with a given key from the list
+  deleteKey(&head, 25);
+  deleteKey(&head, 45);
+  deleteKey(&head, 55);
+  // print the list
+  cout << "The list after deleting nodes with keys 25, 45, and 55:" << endl;
+  printList(head);
+  // delete the remaining nodes from the list
+  deleteFront(&head);
+  deleteFront(&head);
+  // print the list
+  cout << "The list after deleting all the nodes:" << endl;
+  printList(head);
+  return 0;
+}
