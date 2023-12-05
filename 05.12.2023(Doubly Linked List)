@@ -1,0 +1,245 @@
+#include <iostream>
+using namespace std;
+
+// A node of a doubly linked list
+struct Node {
+  int data; // data item
+  struct Node* next; // pointer to the next node
+  struct Node* prev; // pointer to the previous node
+};
+
+// A function to insert a node at the front of a doubly linked list
+void insertFront(struct Node** head, int data) {
+  // allocate memory for a new node
+  struct Node* newNode = new Node;
+  // assign data to the new node
+  newNode->data = data;
+  // point the new node to the current head
+  newNode->next = *head;
+  // point the previous pointer of the new node to NULL
+  newNode->prev = NULL;
+  // check if the list is not empty
+  if (*head != NULL) {
+    // point the previous pointer of the old head to the new node
+    (*head)->prev = newNode;
+  }
+  // make the new node the new head
+  *head = newNode;
+}
+
+// A function to insert a node after a given node of a doubly linked list
+void insertAfter(struct Node* prevNode, int data) {
+  // check if the given node is NULL
+  if (prevNode == NULL) {
+    cout << "The given previous node cannot be NULL" << endl;
+    return;
+  }
+  // allocate memory for a new node
+  struct Node* newNode = new Node;
+  // assign data to the new node
+  newNode->data = data;
+  // point the new node to the next node of the previous node
+  newNode->next = prevNode->next;
+  // point the previous node to the new node
+  prevNode->next = newNode;
+  // point the previous pointer of the new node to the previous node
+  newNode->prev = prevNode;
+  // check if the new node is not the last node
+  if (newNode->next != NULL) {
+    // point the previous pointer of the next node to the new node
+    newNode->next->prev = newNode;
+  }
+}
+
+// A function to insert a node at the end of a doubly linked list
+void insertEnd(struct Node** head, int data) {
+  // allocate memory for a new node
+  struct Node* newNode = new Node;
+  // assign data to the new node
+  newNode->data = data;
+  // point the next pointer of the new node to NULL
+  newNode->next = NULL;
+  // check if the list is empty
+  if (*head == NULL) {
+    // point the previous pointer of the new node to NULL
+    newNode->prev = NULL;
+    // make the new node the head
+    *head = newNode;
+    return;
+  }
+  // traverse the list to find the last node
+  struct Node* lastNode = *head;
+  while (lastNode->next != NULL) {
+    lastNode = lastNode->next;
+  }
+  // point the last node to the new node
+  lastNode->next = newNode;
+  // point the previous pointer of the new node to the last node
+  newNode->prev = lastNode;
+}
+
+// A function to delete the first node of a doubly linked list
+void deleteFront(struct Node** head) {
+  // check if the list is empty
+  if (*head == NULL) {
+    cout << "The list is empty, nothing to delete" << endl;
+    return;
+  }
+  // store the head node in a temporary variable
+  struct Node* temp = *head;
+  // check if the list has only one node
+  if (temp->next == NULL) {
+    // delete the head node
+    delete temp;
+    // make the head NULL
+    *head = NULL;
+    return;
+  }
+  // move the head to the next node
+  *head = (*head)->next;
+  // point the previous pointer of the new head to NULL
+  (*head)->prev = NULL;
+  // delete the old head node
+  delete temp;
+}
+
+// A function to delete the last node of a doubly linked list
+void deleteEnd(struct Node** head) {
+  // check if the list is empty
+  if (*head == NULL) {
+    cout << "The list is empty, nothing to delete" << endl;
+    return;
+  }
+  // store the head node in a temporary variable
+  struct Node* temp = *head;
+  // check if the list has only one node
+  if (temp->next == NULL) {
+    // delete the head node
+    delete temp;
+    // make the head NULL
+    *head = NULL;
+    return;
+  }
+  // traverse the list to find the last node
+  while (temp->next != NULL) {
+    temp = temp->next;
+  }
+  // point the previous node of the last node to NULL
+  temp->prev->next = NULL;
+  // delete the last node
+  delete temp;
+}
+
+// A function to delete a node with a given key from a doubly linked list
+void deleteKey(struct Node** head, int key) {
+  // store the head node in a temporary variable
+  struct Node* temp = *head;
+  // check if the head node has the key
+  if (temp != NULL && temp->data == key) {
+    // check if the list has only one node
+    if (temp->next == NULL) {
+      // delete the head node
+      delete temp;
+      // make the head NULL
+      *head = NULL;
+      return;
+    }
+    // move the head to the next node
+    *head = temp->next;
+    // point the previous pointer of the new head to NULL
+    (*head)->prev = NULL;
+    // delete the old head node
+    delete temp;
+    return;
+  }
+  // traverse the list to find the node with the key
+  while (temp != NULL && temp->data != key) {
+    // move to the next node
+    temp = temp->next;
+  }
+  // check if the key was not found
+  if (temp == NULL) {
+    cout << "The key was not found in the list" << endl;
+    return;
+  }
+  // check if the node with the key is the last node
+  if (temp->next == NULL) {
+    // point the previous node of the last node to NULL
+    temp->prev->next = NULL;
+    // delete the last node
+    delete temp;
+    return;
+  }
+  // unlink the node with the key from the list
+  temp->prev->next = temp->next;
+  temp->next->prev = temp->prev;
+  // delete the node with the key
+  delete temp;
+}
+
+// A function to print the contents of a doubly linked list
+void printList(struct Node* head) {
+  // check if the list is empty
+  if (head == NULL) {
+    cout << "The list is empty" << endl;
+    return;
+  }
+  // traverse the list and print the data of each node
+  while (head != NULL) {
+    cout << head->data << " ";
+    head = head->next;
+  }
+  cout << endl;
+}
+
+// A main function to demonstrate some of the operations on a doubly linked list
+int main() {
+  // create an empty list
+  struct Node* head = NULL;
+  // insert some nodes at the front of the list
+  insertFront(&head, 10);
+  insertFront(&head, 20);
+  insertFront(&head, 30);
+  // print the list
+  cout << "The list after inserting 10, 20, and 30 at the front:" << endl;
+  printList(head);
+  // insert some nodes at the end of the list
+  insertEnd(&head, 40);
+  insertEnd(&head, 50);
+  insertEnd(&head, 60);
+  // print the list
+  cout << "The list after inserting 40, 50, and 60 at the end:" << endl;
+  printList(head);
+  // insert some nodes after a given node of the list
+  insertAfter(head->next, 25);
+  insertAfter(head->next->next->next, 45);
+  insertAfter(head->next->next->next->next->next, 55);
+  // print the list
+  cout << "The list after inserting 25, 45, and 55 after some nodes:" << endl;
+  printList(head);
+  // delete some nodes from the front of the list
+  deleteFront(&head);
+  deleteFront(&head);
+  // print the list
+  cout << "The list after deleting two nodes from the front:" << endl;
+  printList(head);
+  // delete some nodes from the end of the list
+  deleteEnd(&head);
+  deleteEnd(&head);
+  // print the list
+  cout << "The list after deleting two nodes from the end:" << endl;
+  printList(head);
+  // delete some nodes with a given key from the list
+  deleteKey(&head, 25);
+  deleteKey(&head, 45);
+  deleteKey(&head, 55);
+  // print the list
+  cout << "The list after deleting nodes with keys 25, 45, and 55:" << endl;
+  printList(head);
+  // delete the remaining nodes from the list
+  deleteFront(&head);
+  deleteFront(&head);
+  // print the list
+  cout << "The list after deleting all the nodes:" << endl;
+  printList(head);
+}
